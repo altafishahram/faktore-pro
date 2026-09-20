@@ -499,7 +499,7 @@ export const QuotationRepository = {
       date: new Date().toISOString().slice(0, 10),
       customerId: quotation.customerId,
       customerName: quotation.customerName,
-      status: 'draft',
+      status: 'issued',
       items: items.map((it) => ({
         productId: it.productId,
         productName: it.productName,

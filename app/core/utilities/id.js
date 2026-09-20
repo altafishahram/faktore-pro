@@ -37,18 +37,31 @@ export function formatCurrency(amount, currency = 'تومان') {
 }
 
 /**
- * Simple date formatter (placeholder for Jalali later)
+ * Format date as Jalali (Shamsi) e.g. ۱۴۰۴/۰۶/۲۹
  * @param {string|Date} date
  * @returns {string}
  */
 export function formatDate(date) {
   if (!date) return '';
-  const d = typeof date === 'string' ? new Date(date) : date;
-  return new Intl.DateTimeFormat('fa-IR', {
-    year: 'numeric',
-    month: '2-digit',
-    day: '2-digit'
-  }).format(d);
+  try {
+    // Prefer persian calendar via Intl when available
+    const d = typeof date === 'string'
+      ? new Date(date.includes('T') ? date : date + 'T12:00:00')
+      : date;
+    if (isNaN(d.getTime())) return '';
+    return new Intl.DateTimeFormat('fa-IR-u-ca-persian', {
+      year: 'numeric',
+      month: '2-digit',
+      day: '2-digit'
+    }).format(d);
+  } catch {
+    const d = typeof date === 'string' ? new Date(date) : date;
+    return new Intl.DateTimeFormat('fa-IR', {
+      year: 'numeric',
+      month: '2-digit',
+      day: '2-digit'
+    }).format(d);
+  }
 }
 
 /**

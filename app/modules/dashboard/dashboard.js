@@ -17,17 +17,17 @@ export async function renderDashboard() {
       <div class="welcome-card glass-card" style="padding: var(--space-6); margin-bottom: var(--space-6);">
         <h2 style="font-size: var(--font-size-2xl); margin-bottom: var(--space-2);">سلام 👋</h2>
         <p style="color: var(--color-muted); margin-bottom: var(--space-5);">چه کاری می‌خواهید انجام دهید؟</p>
-        <div style="display: flex; flex-wrap: wrap; gap: var(--space-3);">
-          <a href="#/invoices/new" class="btn btn-primary btn-lg">
-            <span>+ فاکتور جدید</span>
+        <div class="dash-actions" style="display:flex;flex-wrap:nowrap;gap:var(--space-2);">
+          <a href="#/invoices/new" class="btn btn-primary" style="flex:1;justify-content:center;white-space:nowrap;padding:12px 10px;font-size:var(--font-size-sm);">
+            + فاکتور جدید
           </a>
-          <a href="#/quotations/new" class="btn btn-secondary btn-lg">
-            <span>+ پیش‌فاکتور جدید</span>
+          <a href="#/quotations/new" class="btn btn-secondary" style="flex:1;justify-content:center;white-space:nowrap;padding:12px 10px;font-size:var(--font-size-sm);">
+            + پیش‌فاکتور جدید
           </a>
         </div>
       </div>
 
-      <div id="dashboard-stats" class="stats-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: var(--space-4); margin-bottom: var(--space-6);">
+      <div id="dashboard-stats" class="stats-grid" style="display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:var(--space-2);margin-bottom:var(--space-6);">
         <div class="card" style="padding: var(--space-4); text-align: center;">
           <div class="skeleton" style="height: 28px; width: 60%; margin: 0 auto 8px;"></div>
           <div class="skeleton" style="height: 16px; width: 40%; margin: 0 auto;"></div>
@@ -64,17 +64,17 @@ export async function renderDashboard() {
     const statsEl = document.getElementById('dashboard-stats');
     if (statsEl) {
       statsEl.innerHTML = `
-        <div class="card" style="padding: var(--space-4); text-align: center;">
-          <div style="font-size: var(--font-size-2xl); font-weight: 700; color: var(--color-primary);">${invoices.length}</div>
-          <div style="font-size: var(--font-size-sm); color: var(--color-muted);">فاکتورها</div>
+        <div class="card" style="padding:var(--space-3) var(--space-2);text-align:center;">
+          <div style="font-size:var(--font-size-xl);font-weight:700;color:var(--color-primary);">${invoices.length}</div>
+          <div style="font-size:11px;color:var(--color-muted);white-space:nowrap;">فاکتورها</div>
         </div>
-        <div class="card" style="padding: var(--space-4); text-align: center;">
-          <div style="font-size: var(--font-size-2xl); font-weight: 700; color: var(--color-accent);">${quotations.length}</div>
-          <div style="font-size: var(--font-size-sm); color: var(--color-muted);">پیش‌فاکتورها</div>
+        <div class="card" style="padding:var(--space-3) var(--space-2);text-align:center;">
+          <div style="font-size:var(--font-size-xl);font-weight:700;color:var(--color-accent);">${quotations.length}</div>
+          <div style="font-size:11px;color:var(--color-muted);white-space:nowrap;">پیش‌فاکتور</div>
         </div>
-        <div class="card" style="padding: var(--space-4); text-align: center;">
-          <div style="font-size: var(--font-size-2xl); font-weight: 700;">${invoices.filter(i => i.status === 'draft').length}</div>
-          <div style="font-size: var(--font-size-sm); color: var(--color-muted);">پیش‌نویس</div>
+        <div class="card" style="padding:var(--space-3) var(--space-2);text-align:center;">
+          <div style="font-size:var(--font-size-xl);font-weight:700;">${invoices.filter(i => i.status === 'draft').length}</div>
+          <div style="font-size:11px;color:var(--color-muted);white-space:nowrap;">پیش‌نویس</div>
         </div>
       `;
     }

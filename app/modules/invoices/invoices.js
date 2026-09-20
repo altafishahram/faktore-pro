@@ -5,6 +5,7 @@
 import { InvoiceRepository, CustomerRepository, ProductRepository, DocumentSettingsRepository } from '../../storage/indexeddb/repositories.js';
 import { calculateLineTotal, calculateDocumentTotals } from '../../services/pricing/pricing-service.js';
 import { formatCurrency, formatDate, debounce } from '../../core/utilities/id.js';
+import { mountJalaliDatePicker } from '../../core/utilities/jalali.js';
 import { emit, Events } from '../../core/events/event-bus.js';
 import { showToast } from '../../core/app/bootstrap.js';
 import { navigate } from '../../core/router/router.js';
@@ -219,8 +220,8 @@ async function renderInvoiceForm(options) {
 
           <!-- Date -->
           <div class="form-group">
-            <label class="form-label" for="inv-date">تاریخ</label>
-            <input type="date" id="inv-date" class="form-input ltr" value="${formState.date}" dir="ltr" />
+            <label class="form-label">تاریخ (شمسی)</label>
+            <div id="inv-date-jalali"></div>
           </div>
 
           <!-- Items -->
@@ -294,6 +295,7 @@ async function renderInvoiceForm(options) {
   bindFormEvents();
   renderItemsList();
   recalculateTotals();
+  mountJalaliDatePicker('inv-date-jalali', formState.date, (iso) => { formState.date = iso; });
   updateActiveNav('invoices');
 }
 
@@ -310,9 +312,7 @@ function bindFormEvents() {
     formState.discount = Number(document.getElementById('inv-discount').value) || 0;
     recalculateTotals();
   });
-  document.getElementById('inv-date')?.addEventListener('change', (e) => {
-    formState.date = e.target.value;
-  });
+  // Jalali date mounted below
   document.getElementById('inv-notes')?.addEventListener('input', (e) => {
     formState.notes = e.target.value;
   });
@@ -426,16 +426,17 @@ function renderItemsList() {
   }
 
   list.innerHTML = formState.items.map((item, idx) => `
-    <div class="card" style="padding:var(--space-3);display:flex;align-items:center;gap:var(--space-2);">
-      <div style="flex:1;min-width:0;">
-        <div style="font-weight:600;font-size:var(--font-size-sm);">${escapeHtml(item.productName)}</div>
-        <div style="display:flex;gap:var(--space-2);align-items:center;margin-top:4px;">
-          <input type="number" class="form-input item-qty" data-idx="${idx}" value="${item.quantity}" min="1" style="width:70px;padding:4px 8px;" dir="ltr" />
-          <span style="font-size:var(--font-size-xs);color:var(--color-muted);">× ${formatCurrency(item.unitPrice)}</span>
-        </div>
+    <div class="card" style="padding:var(--space-3);">
+      <div style="display:flex;justify-content:space-between;align-items:center;gap:var(--space-2);margin-bottom:8px;">
+        <div style="font-weight:600;font-size:var(--font-size-sm);flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">${escapeHtml(item.productName)}</div>
+        <button class="btn btn-ghost btn-sm btn-remove-item" data-idx="${idx}" style="flex-shrink:0;">✕</button>
       </div>
-      <div style="font-weight:600;white-space:nowrap;">${formatCurrency(item.lineTotal)}</div>
-      <button class="btn btn-ghost btn-sm btn-remove-item" data-idx="${idx}">✕</button>
+      <div style="display:flex;align-items:center;gap:8px;flex-wrap:nowrap;">
+        <input type="number" class="form-input item-qty" data-idx="${idx}" value="${item.quantity}" min="1" style="width:64px;min-width:64px;padding:8px 6px;flex-shrink:0;" dir="ltr" inputmode="numeric" />
+        <span style="font-size:var(--font-size-xs);color:var(--color-muted);flex-shrink:0;">×</span>
+        <span style="font-size:var(--font-size-sm);color:var(--color-muted);white-space:nowrap;flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;">${formatCurrency(item.unitPrice)}</span>
+        <span style="font-weight:700;white-space:nowrap;flex-shrink:0;font-size:var(--font-size-sm);">${formatCurrency(item.lineTotal)}</span>
+      </div>
     </div>
   `).join('');
 
