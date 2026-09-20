@@ -1,0 +1,275 @@
+/* =====================================================
+   App Layout - Desktop Sidebar + Mobile Bottom Nav
+   ===================================================== */
+
+.app-shell {
+  display: flex;
+  min-height: 100dvh;
+  position: relative;
+}
+
+/* ========== Sidebar (Desktop) ========== */
+.sidebar {
+  position: fixed;
+  top: 0;
+  right: 0; /* RTL: sidebar on right */
+  bottom: 0;
+  width: var(--sidebar-width);
+  z-index: var(--z-sticky);
+  display: flex;
+  flex-direction: column;
+  padding: var(--space-4);
+  transition: width var(--transition-base), transform var(--transition-base);
+}
+
+.sidebar.glass {
+  background: var(--color-surface-elevated);
+  backdrop-filter: blur(var(--blur-xl));
+  -webkit-backdrop-filter: blur(var(--blur-xl));
+  border-left: 1px solid var(--color-border);
+}
+
+.sidebar-header {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  padding: var(--space-3) var(--space-2);
+  margin-bottom: var(--space-6);
+}
+
+.sidebar-logo {
+  width: 40px;
+  height: 40px;
+  border-radius: var(--radius-lg);
+  background: linear-gradient(135deg, var(--color-primary), var(--color-accent));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-weight: var(--font-weight-bold);
+  font-size: var(--font-size-lg);
+  flex-shrink: 0;
+}
+
+.sidebar-title {
+  font-size: var(--font-size-lg);
+  font-weight: var(--font-weight-semibold);
+  color: var(--color-text);
+  white-space: nowrap;
+  overflow: hidden;
+}
+
+.sidebar-nav {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+  overflow-y: auto;
+}
+
+.nav-item {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  padding: var(--space-3) var(--space-4);
+  border-radius: var(--radius-lg);
+  color: var(--color-text-secondary);
+  font-weight: var(--font-weight-medium);
+  font-size: var(--font-size-sm);
+  transition: all var(--transition-fast);
+  text-decoration: none;
+  position: relative;
+}
+
+.nav-item:hover {
+  background: var(--color-primary-soft);
+  color: var(--color-primary);
+}
+
+.nav-item.active {
+  background: var(--color-primary-soft);
+  color: var(--color-primary);
+  font-weight: var(--font-weight-semibold);
+}
+
+.nav-item.active::before {
+  content: "";
+  position: absolute;
+  right: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 3px;
+  height: 60%;
+  background: var(--color-primary);
+  border-radius: var(--radius-full);
+}
+
+.nav-icon {
+  width: 22px;
+  height: 22px;
+  flex-shrink: 0;
+  opacity: 0.85;
+}
+
+.nav-label {
+  white-space: nowrap;
+}
+
+/* ========== Main Content ========== */
+.main-content {
+  flex: 1;
+  margin-right: var(--sidebar-width); /* RTL */
+  min-height: 100dvh;
+  display: flex;
+  flex-direction: column;
+  transition: margin var(--transition-base);
+}
+
+.page-header {
+  position: sticky;
+  top: 0;
+  z-index: var(--z-sticky);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-4);
+  padding: var(--space-4) var(--space-6);
+  background: var(--color-surface);
+  backdrop-filter: blur(var(--blur-md));
+  -webkit-backdrop-filter: blur(var(--blur-md));
+  border-bottom: 1px solid var(--color-border);
+}
+
+.page-title {
+  font-size: var(--font-size-2xl);
+  font-weight: var(--font-weight-bold);
+  color: var(--color-text);
+}
+
+.page-actions {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+}
+
+.page-body {
+  flex: 1;
+  padding: var(--space-6);
+  padding-bottom: calc(var(--space-6) + var(--bottom-nav-height));
+}
+
+/* ========== Bottom Navigation (Mobile) ========== */
+.bottom-nav {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: calc(var(--bottom-nav-height) + env(safe-area-inset-bottom, 0px));
+  padding-bottom: env(safe-area-inset-bottom, 0px);
+  z-index: var(--z-sticky);
+  display: none; /* shown on mobile */
+  align-items: center;
+  justify-content: space-around;
+  padding: 0 var(--space-2);
+  background: var(--color-surface-elevated);
+  backdrop-filter: blur(var(--blur-xl));
+  -webkit-backdrop-filter: blur(var(--blur-xl));
+  border-top: 1px solid var(--color-border);
+  box-shadow: 0 -4px 20px rgba(15, 23, 42, 0.06);
+}
+
+.bottom-nav-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  padding: var(--space-2);
+  min-width: 64px;
+  color: var(--color-muted);
+  font-size: var(--font-size-xs);
+  font-weight: var(--font-weight-medium);
+  border-radius: var(--radius-lg);
+  transition: color var(--transition-fast);
+  text-decoration: none;
+}
+
+.bottom-nav-item.active {
+  color: var(--color-primary);
+}
+
+.bottom-nav-item .nav-icon {
+  width: 24px;
+  height: 24px;
+}
+
+/* Floating Action Button */
+.fab {
+  position: fixed;
+  bottom: calc(var(--bottom-nav-height) + env(safe-area-inset-bottom, 0px) + var(--space-4));
+  left: var(--space-4); /* RTL: primary action on left */
+  width: 56px;
+  height: 56px;
+  border-radius: var(--radius-full);
+  background: linear-gradient(135deg, var(--color-primary), var(--color-primary-light));
+  color: white;
+  display: none; /* mobile */
+  align-items: center;
+  justify-content: center;
+  box-shadow: var(--shadow-lg), 0 4px 14px rgba(37, 99, 235, 0.4);
+  z-index: calc(var(--z-sticky) + 10);
+  transition: transform var(--transition-fast), box-shadow var(--transition-fast);
+}
+
+.fab:hover {
+  transform: scale(1.05);
+  box-shadow: var(--shadow-xl), 0 6px 20px rgba(37, 99, 235, 0.5);
+}
+
+.fab:active {
+  transform: scale(0.97);
+}
+
+.fab svg {
+  width: 28px;
+  height: 28px;
+}
+
+/* ========== Responsive ========== */
+@media (max-width: 1023px) {
+  .sidebar {
+    transform: translateX(100%); /* hidden off-screen RTL */
+  }
+
+  .sidebar.open {
+    transform: translateX(0);
+  }
+
+  .main-content {
+    margin-right: 0;
+  }
+
+  .bottom-nav {
+    display: flex;
+  }
+
+  .fab {
+    display: flex;
+  }
+
+  .page-body {
+    padding: var(--space-4);
+    padding-bottom: calc(var(--space-4) + var(--bottom-nav-height) + env(safe-area-inset-bottom, 0px) + 16px);
+  }
+
+  .page-header {
+    padding: var(--space-3) var(--space-4);
+  }
+}
+
+@media (min-width: 1024px) {
+  .bottom-nav,
+  .fab {
+    display: none !important;
+  }
+}
