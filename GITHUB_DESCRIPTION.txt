@@ -1,0 +1,9 @@
+=== دیسکریپشن کوتاه ریپازیتوری (GitHub Description) ===
+
+فاکتور پرو — اپ مدیریت فاکتور و پیش‌فاکتور کاملاً آفلاین (PWA). بدون سرور، بدون اینترنت، با IndexedDB، پشتیبانی RTL فارسی، دارک‌مود و نصب روی موبایل.
+
+---
+
+English (optional):
+
+Faktor Pro — Offline-first Invoice & Proforma PWA. No backend, local IndexedDB storage, Persian RTL, dark mode, and installable on mobile.

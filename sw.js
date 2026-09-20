@@ -3,7 +3,7 @@
  * Caches app shell for offline use
  */
 
-const CACHE_NAME = 'invoice-proforma-v7';
+const CACHE_NAME = 'invoice-proforma-v8';
 const APP_SHELL = [
   './',
   './index.html',
@@ -18,6 +18,7 @@ const APP_SHELL = [
   './app/core/state/store.js',
   './app/core/events/event-bus.js',
   './app/core/utilities/id.js',
+  './app/core/utilities/jalali.js',
   './app/core/utilities/theme.js',
   './app/storage/indexeddb/db.js',
   './app/modules/dashboard/dashboard.js',
